@@ -99,6 +99,36 @@ function engineerPrompts() {
     })
 
 }
+
+function initialPrompt(){
+    inquirer.prompt([
+        {
+            type: 'list', 
+            message: 'What kind of employeewould you like to add?', 
+            name: 'employeeChoice', 
+            choices: ['Manager', 'Engineer', 'Intern', 'Quit']
+        }
+    ]).then(userChoices => {
+        if (userChoices.employeeChoice === 'Manager'){
+            managerPrompts()
+            // initialPrompt()
+        }
+        if (userChoices.employeeChoice === 'Enineer'){
+            engineerPrompts()
+            // initialPrompt()
+        }
+        if (userChoices.employeeChoice === 'Intern'){
+            internPrompts()
+            // initialPrompt()
+        }
+        if(userChoices.employeeChoice === 'Quit'){
+            createdHTML();
+        }
+    })
+}
+
 // managerPrompts()
 // internPrompts()
-engineerPrompts()
+// engineerPrompts()
+
+initialPrompt()
