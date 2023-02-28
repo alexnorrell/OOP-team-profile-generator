@@ -3,6 +3,7 @@ const Employee = require('./lib/Employee.js')
 const Manager = require('./lib/Manager.js')
 const Engineer = require('./lib/Engineer.js')
 const Intern = require('./lib/Intern.js')
+const fs = require('fs')
 const managerQuestions = [
     {
         type:'input', name:'name', message:'What is your name?',
@@ -45,7 +46,22 @@ const engineerQuestions =[
         type:'input', name:'github', message:'What is your git hub user name?'
     }
 ]
-let employeeHtml = ''
+let employeeHtml = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OOP</title>
+    <link href="style.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div>
+       <header class="header">
+        <h2>My Team</h2>
+        </header>
+    </div>
+    <div class="grid">`
 function managerPrompts() {
     inquirer.prompt(managerQuestions).then(function(answers){
        
@@ -54,14 +70,14 @@ function managerPrompts() {
            <div class="grid-item">
            <div class="card">
                <div class="card-content">
-                  <h1 class="card-header">${manager.getName()}</h1>
-                  <p class="card-text"> email: ${manager.getEmail()}</p>
+                  <h1 class="card-header"> ${manager.getName()}</h1>
+                  <p class="card-text"> email: <a href="mailto:${manager.getEmail}">${manager.getEmail ()}</a></p>
                   <p class="card-text"> ID: ${manager.getID()}</p>
                   <p class="card-text"> Office Number: ${manager.getOfficeNumber()}</p>
                </div>
            </div>
        </div> `;
-       console.log(employeeHtml)
+       initialPrompt();
     })
 }
 function internPrompts() {
@@ -72,13 +88,13 @@ function internPrompts() {
         <div class="card">
             <div class="card-content">
                <h1 class="card-header">${intern.getName()}</h1>
-               <p class="card-text"> email: ${intern.getEmail()}</p>
+               <p class="card-text"> email: <a href="mailto:${intern.getEmail}">${intern.getEmail()}</a></p>
                <p class="card-text"> ID: ${intern.getID()}</p>
                <p class="card-text"> School: ${intern.getSchool()}</p>
             </div>
         </div>
     </div> `;
-    console.log(employeeHtml)
+    initialPrompt();
     })
 }
 function engineerPrompts() {
@@ -89,13 +105,13 @@ function engineerPrompts() {
         <div class="card">
             <div class="card-content">
                <h1 class="card-header">${engineer.getName()}</h1>
-               <p class="card-text"> email: ${engineer.getEmail()}</p>
+               <p class="card-text"> email: <a href="mailto:${engineer.getEmail}">${engineer.getEmail()}</a></p>
                <p class="card-text"> ID: ${engineer.getID()}</p>
-               <p class="card-text"> School: ${engineer.getGitHub()}</p>
+               <p class="card-text"> GitHub: <a${engineer.getGitHub}">https://github.com/${engineer.getGitHub()}</a></p>
             </div>
         </div>
     </div> `;
-    console.log(employeeHtml)
+    initialPrompt();
     })
 
 }
@@ -113,7 +129,7 @@ function initialPrompt(){
             managerPrompts()
             // initialPrompt()
         }
-        if (userChoices.employeeChoice === 'Enineer'){
+        if (userChoices.employeeChoice === 'Engineer'){
             engineerPrompts()
             // initialPrompt()
         }
@@ -122,10 +138,21 @@ function initialPrompt(){
             // initialPrompt()
         }
         if(userChoices.employeeChoice === 'Quit'){
-            createdHTML();
+            pageHTML();
         }
+
     })
 }
+
+function pageHTML(){
+    employeeHtml +=`    </div>
+    </body>
+    </html>`
+    fs.writeFile('dist/page.html', employeeHtml, (err) =>
+    err ? console.error(err) : console.log('Commit logged!')
+  );
+}
+
 
 // managerPrompts()
 // internPrompts()
